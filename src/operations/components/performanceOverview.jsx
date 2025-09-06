@@ -22,7 +22,7 @@ export default function PerformanceOverview() {
       {
         data: productData.map((item) => item.activeWallets),
         backgroundColor: COLORS,
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: "#0f0f0f",
       },
     ],
@@ -42,12 +42,17 @@ export default function PerformanceOverview() {
             return `${label}: ${value.toLocaleString()}`;
           },
         },
-        backgroundColor: "#1e1e1e",
-        titleColor: "#fff",
-        bodyColor: "#fff",
-        borderColor: "#333",
+        backgroundColor: "#fff",
+        titleColor: "#1f2937",
+        bodyColor: "#1f2937",
+        borderColor: "#fff",
+      },
+    },
+    elements: {
+      arc: {
         borderWidth: 1,
-        padding: 8,
+        borderColor: "#0f0f0f",
+        spacing: 2, // adds extra spacing between slices
       },
     },
   };
@@ -65,39 +70,43 @@ export default function PerformanceOverview() {
 
   return (
     <div>
-      <h2 className="flex items-center gap-2 text-primary mb-6">
+      <h2 className="flex items-center gap-2 text-[18px] text-primary mb-6">
         <span>
           <ChartColumn size="18" />
         </span>{" "}
         Performance Overview
       </h2>
-      <div className="glass-card">
+      <div className="glass-card h-full flex flex-col corner-box">
+        <span />
         {/* Header */}
         <div className="flex items-center text-primary gap-2 mb-4">
           <Box size={18} />
           <h2 className="text-sm font-medium">Product Performance Analytics</h2>
         </div>
 
-        {/* Chart */}
-        <div className="h-60">
+        {/* Chart with fixed height */}
+        <div className="h-52 flex justify-center">
           <Pie data={chartData} options={options} />
         </div>
 
         {/* Custom Legend */}
-        <div className="flex flex-wrap gap-4 justify-center my-4 text-sm">
-          {productData.slice(0, 4).map((item, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <span
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: COLORS[index % COLORS.length] }}
-              ></span>
-              <span className="text-gray-300">{item.walletCategory}</span>
-            </div>
-          ))}
+        <div className="flex justify-center my-4 text-xs">
+          <div className="grid grid-cols-2 gap-4">
+            {productData.map((item, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <span
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                />
+                <span className="text-gray-300">{item.walletCategory}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Footer Stats */}
-        <div className="border-t border-gray-700 pt-4 flex justify-around text-center">
+        {/* Footer */}
+        <div className="thin-border my-[13px] mx-[-16px]" />
+        <div className="pt-4 flex justify-around text-center">
           {footerStats.map((stat, index) => (
             <div key={index}>
               <div className="text-green-400 font-bold text-lg">

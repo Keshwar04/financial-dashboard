@@ -205,7 +205,7 @@ export const transactionRes = [
   },
 ];
 
-export const walletPerfomanceRes = [
+export const walletPerformanceRes = [
   {
     totalCurrent: 50055,
     status: "Active",
@@ -255,7 +255,7 @@ export const productRes = [
   },
   {
     walletCategory: "Food Cards",
-    activeWallets: 176,
+    activeWallets: 3176,
   },
   {
     walletCategory: "Gift Cards",

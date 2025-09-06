@@ -4,7 +4,7 @@ import {
   productRes,
   transactionRes,
   unloadedRes,
-  walletPerfomanceRes,
+  walletPerformanceRes,
 } from "../mockData";
 
 export const useOperationStore = create((set) => ({
@@ -23,9 +23,9 @@ export const useOperationStore = create((set) => ({
   partnerData: [],
   setPartnerData: (data) => set(() => ({ partnerData: data })),
 
-  walletPerfomanceData: walletPerfomanceRes,
-  setWalletPerfomanceData: (data) =>
-    set(() => ({ walletPerfomanceData: data })),
+  walletPerformanceData: walletPerformanceRes,
+  setWalletPerformanceData: (data) =>
+    set(() => ({ walletPerformanceData: data })),
 
   error: {},
   setError: (updater) =>

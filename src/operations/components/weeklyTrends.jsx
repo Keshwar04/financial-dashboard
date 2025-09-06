@@ -55,9 +55,7 @@ const WeeklyTrends = () => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        display: false,
-      },
+      legend: { display: false },
       tooltip: {
         backgroundColor: "#fff",
         borderWidth: 1,
@@ -65,13 +63,21 @@ const WeeklyTrends = () => {
         bodyColor: "#111827",
         padding: 8,
         cornerRadius: 8,
+        displayColors: false, // disable default dataset squares
         callbacks: {
-          // 👇 Override title
+          // 👇 Title with dataset-colored square
           title: function (context) {
-            // Take the day name (x-axis label)
-            const title = context[0].label || "";
-            // Wrap in extra spaces to center visually
-            return "   " + title + "   ";
+            const datasetLabel = context[0].dataset.label;
+            const day = context[0].label || "";
+
+            let square = "⬛"; // default
+            if (datasetLabel.includes("Loading")) {
+              square = "🟩"; // green square
+            } else if (datasetLabel.includes("Unloading")) {
+              square = "🟥"; // red square
+            }
+
+            return `${square} ${day}`;
           },
           label: function (context) {
             const index = context.dataIndex;
@@ -136,7 +142,8 @@ const WeeklyTrends = () => {
         </h1>
       )}
       {!error.transaction && (
-        <div className="glass-card">
+        <div className="glass-card corner-box">
+          <span />
           {/* Title */}
           <h2 className="flex items-center gap-2 mb-4">
             <TrendingUp size="18" className="text-primary" />
@@ -144,7 +151,7 @@ const WeeklyTrends = () => {
           </h2>
 
           {/* Chart */}
-          <div className="h-64">
+          <div className="h-75.5">
             <Line data={dataset} options={options} />
           </div>
           <div className="thin-border my-[13px] mx-[-16px]" />

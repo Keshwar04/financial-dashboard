@@ -54,7 +54,7 @@ const LoadedUnLoaded = ({ isLoaded }) => {
     plugins: {
       legend: { display: false },
       tooltip: {
-        backgroundColor: " #fff",
+        backgroundColor: "#fff",
         titleColor: "#1f2937",
         bodyColor: "#1f2937",
         callbacks: {
@@ -67,25 +67,26 @@ const LoadedUnLoaded = ({ isLoaded }) => {
   };
 
   return (
-    <>
+    <div>
       {error[isLoaded ? "loaded" : "unloaded"] && (
         <h1 className="text-red-500 text-xs text-center">
           {error[isLoaded ? "loaded" : "unloaded"]}
         </h1>
       )}
       {!error[isLoaded ? "loaded" : "unloaded"] && (
-        <div className="glass-card">
+        <div className="glass-card corner-box">
+          <span />
           {/* Header */}
-          <span className="status">
+          <p className="status">
             {isLoaded ? (
               <ArrowUp size="18" className="icon-primary" />
             ) : (
               <ArrowDown size="18" className="icon-danger" />
             )}
-            <span className="card-text">
-              {isLoaded ? "Loaded" : "UnLoaded"}
-            </span>
-          </span>
+            <p className="card-text">
+              {isLoaded ? "Current day loading" : "Current day unloading"}
+            </p>
+          </p>
 
           {/* Amount */}
           {/* <div className="amount-section">
@@ -97,23 +98,26 @@ const LoadedUnLoaded = ({ isLoaded }) => {
 
           {/* Chart */}
           <div className="px-0 xl:px-4">
-            <div className="chart-container">
-              <Doughnut data={data} options={options} />
+            <div className="h-75">
+              <div className="chart-container">
+                <Doughnut data={data} options={options} />
+              </div>
+
+              {/* Legend */}
+              <div className="flex justify-center">
+                <ul className="legend grid grid-cols-2 gap-3">
+                  {labels.map((label, i) => (
+                    <li key={label} className="legend-item ">
+                      <span
+                        className="legend-color w-3 h-3 rounded-sm"
+                        style={{ backgroundColor: colors[i % colors.length] }}
+                      />
+                      <span className="muted truncate">{label}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-
-            {/* Legend */}
-            <ul className="legend grid grid-cols-2 gap-2">
-              {labels.map((label, i) => (
-                <li key={label} className="legend-item ">
-                  <span
-                    className="legend-color w-3 h-3 rounded-sm"
-                    style={{ backgroundColor: colors[i % colors.length] }}
-                  />
-                  <span className="muted truncate">{label}</span>
-                </li>
-              ))}
-            </ul>
-
             {/* Footer */}
             <div className="thin-border my-[13px] mx-[-16px] xl:mx-[-32px]" />
             <div className="footer mx-5 lg:mx-0 mx-3">
@@ -133,7 +137,7 @@ const LoadedUnLoaded = ({ isLoaded }) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

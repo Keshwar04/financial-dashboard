@@ -7,7 +7,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Wallet, ChartColumn } from "lucide-react";
+import { Wallet, ChartColumn, WalletCards } from "lucide-react";
 // import { barChartColor } from "../constants";
 import { useOperationStore } from "../store/operationStore";
 import { barChartColor } from "../constants";
@@ -15,11 +15,10 @@ import { barChartColor } from "../constants";
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 export default function WalletSummary() {
-  const { walletPerfomanceData } = useOperationStore();
-  const label = walletPerfomanceData?.map((e) => e.status);
-  const currentCount = walletPerfomanceData?.map((e) => e.currentCount);
+  const { walletPerformanceData } = useOperationStore();
+  const label = walletPerformanceData?.map((e) => e.status);
+  const currentCount = walletPerformanceData?.map((e) => e.currentCount);
 
-  const totalWallets = walletPerfomanceData?.[0]?.totalCurrent ?? 0;
   const data = {
     labels: label,
     datasets: [
@@ -35,36 +34,33 @@ export default function WalletSummary() {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    layout: { padding: 0 },
     plugins: {
       tooltip: {
         enabled: true,
-        backgroundColor: "#1f2937",
-        titleColor: "#fff",
-        bodyColor: "#fff",
+        backgroundColor: "#fff",
+        titleColor: "#1f2937",
+        bodyColor: "#1f2937",
       },
-      legend: {
-        display: false,
-      },
+      legend: { display: false },
     },
     scales: {
       x: {
-        ticks: {
-          color: "#9ca3af",
-        },
+        ticks: { color: "#9ca3af" },
         grid: {
           display: true,
-          drawBorder: false, // 👈 don’t double-draw
           drawOnChartArea: true,
           drawTicks: true,
+          drawBorder: false, // ✅ disable grid border (prevents overlap)
           color: "#1f2937",
+          lineWidth: 1,
         },
         border: {
-          display: true,
-          color: "#1f2937", // 👈 this draws the vertical line at end of X axis
+          display: true, // ✅ this draws the single bottom X-axis line
+          color: "#1f2937",
           width: 1,
         },
       },
-
       y: {
         ticks: {
           color: "#9ca3af",
@@ -76,68 +72,44 @@ export default function WalletSummary() {
           },
         },
         grid: {
+          display: true,
+          drawOnChartArea: true,
+          drawTicks: true,
+          drawBorder: false, // ❌ turn this OFF so grid doesn’t draw border
           color: "#1f2937",
-          drawBorder: true,
+          lineWidth: 1,
         },
         border: {
-          display: true,
+          display: true, // ✅ keep only ONE border
           color: "#9ca3af",
+          width: 1, // ✅ force thin line
         },
       },
     },
   };
 
-  // const footerStats = walletPerfomanceData?.map((item, idx) => ({
-  //   status: item.status,
-  //   percentage: Math.round(item.percentage),
-  //   color: barChartColor[idx],
-  // }));
   return (
     <div>
       <h2 className="flex items-center gap-2 text-primary mb-6">
         <span>
           <Wallet size="18" />
         </span>
-        <span>Wallet Performance Summary</span>
+        <span className="text-[18px]">Wallet Performance Summary</span>
       </h2>
-      <div className="glass-card">
+      <div className="glass-card h-full flex flex-col corner-box">
+        <span />
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center gap-2">
-            {/* <Wallet size={16} className="icon-blue" /> */}
-            <p className="text-primary text-sm ">Wallet Status Distribution</p>
+          <div className="text-primary flex items-center gap-2">
+            <WalletCards size={16} />
+            <p className="text-sm">Wallet Status Distribution</p>
           </div>
-          {/* <div className="flex items-center muted text-xs">
-            <ChartColumn size={16} className="icon-blue mr-1" />
-            Live
-          </div> */}
         </div>
 
-        {/* Center Total */}
-        {/* <div className="text-center mb-4">
-          <h2 className="wallet-total">
-            {totalWallets?.toLocaleString("en-IN")}
-          </h2>
-          <p className="muted text-xs">Total Wallets</p>
-        </div> */}
-
-        {/* Bar Chart */}
-        <div className="mb-4 grid grid-cols-1 md:grid-cols-2">
-          <div className="h-64">
-            <Bar data={data} options={options} />
-          </div>
-          <div></div>
+        {/* Bar Chart with same fixed height */}
+        <div className="h-102">
+          <Bar data={data} options={options} />
         </div>
-
-        {/* Footer Stats */}
-        {/* <div className="flex justify-around flex-wrap text-xs">
-          {footerStats?.map((item, index) => (
-            <div key={index} className="text-center m-2">
-              <p style={{ color: item.color }}>{`${item.percentage}%`}</p>
-              <p className="muted">{item.status}</p>
-            </div>
-          ))}
-        </div> */}
       </div>
     </div>
   );
